@@ -4,8 +4,22 @@ const today = moment().format("MM/DD/YYYY")
 console.log("NBA app");
 console.log(today)
 
-axios.get(`https://stats.nba.com/stats/scoreboard/?gamedate=${today}&LeagueID=00&DayOffset=0`)
+const getTodaysGames = () => {
+  fetch(`https://stats.nba.com/stats/scoreboard/?gamedate=${today}&LeagueID=00&DayOffset=0`, (response) => {
+    response = response.data.resultSets;
+    console.log(`There are ${response[0].rowSet.length} Games Today`)
+    console.log(10, response[0].name);
+    console.log(11, response[0].headers);
+    console.log(12, response[0].rowSet);
+  })
+};
+
+const fetch = (url, callback) => {
+  axios.get(url)
   .then(response => {
-    console.log(response.data.resultSets)
+    callback(response);
   })
   .catch(error => console.log(error));
+};
+
+getTodaysGames();
